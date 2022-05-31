@@ -1,0 +1,10 @@
+{
+	"manifest_version": 3,
+	"name": "Shlink browser",
+	"version": "0.1.1",
+	"permissions": ["activeTab", "storage"],
+	"action": {
+		"default_popup": "popup/index.html"
+	},
+	"options_page": "settings/index.html"
+}
