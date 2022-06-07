@@ -3,7 +3,15 @@
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import { loadSettings } from "../Storage";
 	import Popup from "./Popup.svelte";
-	import { Content, Header, Loading, SkipToContent } from "carbon-components-svelte";
+	import {
+		Content,
+		Header,
+		HeaderGlobalAction,
+		HeaderUtilities,
+		Loading,
+		SkipToContent,
+	} from "carbon-components-svelte";
+	import SettingsAdjust from "carbon-icons-svelte/lib/SettingsAdjust.svelte";
 
 	let settingsPromise: Promise<ShlinkSettings> = loadSettings().then(
 		(settings) => {
@@ -11,17 +19,26 @@
 			return settings;
 		}
 	);
+
+	const openSettings = () => {
+		if (chrome !== undefined) {
+			chrome.runtime.openOptionsPage();
+		}
+	};
 </script>
 
 <Header company="Shlink Browser" platformName="Popup">
 	<svelte:fragment slot="skip-to-content">
 		<SkipToContent />
 	</svelte:fragment>
+	<HeaderUtilities>
+		<HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} on:click={openSettings} />
+	</HeaderUtilities>
 </Header>
 
 <Content>
 	{#await settingsPromise}
-		<Loading withOverlay={false} description="Loading your settings"/>
+		<Loading withOverlay={false} description="Loading your settings" />
 	{:then settings}
 		<Popup {settings} />
 	{/await}
