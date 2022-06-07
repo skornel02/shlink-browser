@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { Content, Header, Loading, SkipToContent } from "carbon-components-svelte";
+
+	import "carbon-components-svelte/css/white.css";
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import { loadSettings, saveSettings } from "../Storage";
 	import Settings from "./Settings.svelte";
@@ -16,8 +19,16 @@
 	};
 </script>
 
-{#await settingsPromise}
-	<h1>loading...</h1>
-{:then settings}
-	<Settings {settings} {handleSave} />
-{/await}
+<Header company="Shlink Browser" platformName="Options">
+	<svelte:fragment slot="skip-to-content">
+		<SkipToContent />
+	</svelte:fragment>
+</Header>
+
+<Content>
+	{#await settingsPromise}
+		<Loading withOverlay={false} description="Loading your settings"/>
+	{:then settings}
+		<Settings {settings} {handleSave} />
+	{/await}
+</Content>

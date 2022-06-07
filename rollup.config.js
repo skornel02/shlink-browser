@@ -12,6 +12,8 @@ import {
 } from "rollup-plugin-chrome-extension";
 import zip from "rollup-plugin-zip";
 import json from "@rollup/plugin-json";
+import preprocess from 'svelte-preprocess';
+import { icons, optimizeCss, optimizeImports } from "carbon-preprocess-svelte";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -51,7 +53,7 @@ export default [
 			chromeExtension(),
 			simpleReloader(),
 			svelte({
-				preprocess: sveltePreprocess({ sourceMap: !production }),
+				preprocess: [sveltePreprocess({ sourceMap: !production }), optimizeImports()],
 				compilerOptions: {
 					dev: !production,
 				},

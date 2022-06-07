@@ -1,44 +1,69 @@
 <script lang="ts">
-	import { ShlinkBackend } from "../Backend";
 	import type { ShlinkSettings } from "../SettingsHelper";
+	import {
+		Button,
+		Form,
+		FormGroup,
+		Grid,
+		Row,
+		TextInput,
+	} from "carbon-components-svelte";
+	import ConnectionTester from "../components/ConnectionTester.svelte";
 
 	export let settings: ShlinkSettings;
 	export let handleSave: (setting: ShlinkSettings) => Promise<void>;
 	let { apiSecret, apiUrl } = settings;
+	let unsaved: boolean = false;
 
-    const createNewSettings = () => {
-        return {
+	const createNewSettings = () => {
+		return {
 			apiSecret: apiSecret,
 			apiUrl: apiUrl,
-
-        };
-    }
+		};
+	};
 
 	const handleSaveButton = () => {
 		const newSettings = createNewSettings();
-		handleSave(newSettings);
-	};
-
-	const checkConnection = () => {
-		const backend = new ShlinkBackend(createNewSettings());
-		backend.checkToken().then((valid) => {
-			alert(valid ? "Connection successful" : "Connection failed");
-		});
+		handleSave(newSettings)
+			.then(() => {
+				unsaved = false;
+			})
+			.catch(() => {
+				unsaved = true;
+			});
 	};
 </script>
 
-<main>
-	<h1>Hello better dude!</h1>
-	<p>
-		Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-		how to build Svelte apps.
-	</p>
-	<p>
-		API key: <input type="text" bind:value={apiSecret} />
-	</p>
-	<p>
-		Server URL: <input type="text" bind:value={apiUrl} />
-	</p>
-	<button on:click={handleSaveButton}> Save </button>
-	<button on:click={checkConnection}>Check connection</button>
-</main>
+<Grid>
+	<Row>
+		<h2>API options</h2>
+	</Row>
+	<Row>
+		<Form>
+			<FormGroup>
+				<TextInput
+					labelText="API key"
+					placeholder="Enter api key..."
+					helperText="You can find help with your api key here: https://shlink.io/documentation/api-docs/authentication/#managing-api-keys"
+					bind:value={apiSecret}
+					on:change={() => (unsaved = true)}
+				/>
+				<TextInput
+					labelText="Server URL"
+					placeholder="Enter server url..."
+					helperText="This should be a fully qualified URL, including the protocol (http or https)"
+					bind:value={apiUrl}
+					on:change={() => (unsaved = true)}
+				/>
+			</FormGroup>
+			<Button disabled={!unsaved} on:click={handleSaveButton}>Save</Button
+			>
+		</Form>
+	</Row>
+	<Row>
+		<h2>Test</h2>
+	</Row>
+	<Row>
+		<ConnectionTester {apiSecret} {apiUrl} />
+	</Row>
+</Grid>
