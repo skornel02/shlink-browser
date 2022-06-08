@@ -1,7 +1,6 @@
 import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
@@ -12,35 +11,9 @@ import {
 } from "rollup-plugin-chrome-extension";
 import zip from "rollup-plugin-zip";
 import json from "@rollup/plugin-json";
-import preprocess from 'svelte-preprocess';
-import { icons, optimizeCss, optimizeImports } from "carbon-preprocess-svelte";
+import { optimizeImports } from "carbon-preprocess-svelte";
 
 const production = !process.env.ROLLUP_WATCH;
-
-function serve() {
-	let server;
-
-	function toExit() {
-		if (server) server.kill(0);
-	}
-
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require("child_process").spawn(
-				"npm",
-				["run", "start", "--", "--dev"],
-				{
-					stdio: ["ignore", "inherit", "inherit"],
-					shell: true,
-				}
-			);
-
-			process.on("SIGTERM", toExit);
-			process.on("exit", toExit);
-		},
-	};
-}
 
 export default [
 	{
@@ -51,7 +24,7 @@ export default [
 		},
 		plugins: [
 			chromeExtension(),
-			simpleReloader(),
+			simpleReloader({unregisterServiceWorkers: true}),
 			svelte({
 				preprocess: [sveltePreprocess({ sourceMap: !production }), optimizeImports()],
 				compilerOptions: {
@@ -70,10 +43,6 @@ export default [
 				sourceMap: !production,
 				inlineSources: !production,
 			}),
-
-			!production && serve(),
-
-			!production && livereload("public"),
 
 			production && terser(),
 			production && zip({ dir: "releases" }),

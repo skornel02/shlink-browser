@@ -12,6 +12,7 @@
 	import { isSettingsValid } from "../SettingsHelper";
 	import type { ShlinkItem, ShlinkTagsResponse } from "../ShlinkData";
 	import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
+	import { getActiveTab } from "../TabsHelper";
 
 	export let settings: ShlinkSettings;
 	let settingsValid = isSettingsValid(settings);
@@ -19,8 +20,7 @@
 	let currentUrl = "";
 	let backend = new ShlinkV2Backend(settings);
 
-	chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-		const tab = tabs[0];
+	getActiveTab((tab) => {
 		currentUrl = tab.url ?? "";
 	});
 
@@ -62,9 +62,6 @@
 			<p>Invalid settings.</p>
 		</div>
 	{:else}
-		<Row>
-			<Tag id="url" skeleton={currentUrl === ""}>{currentUrl}</Tag>
-		</Row>
 		{#if shlinkItem !== undefined}
 			<Row>
 				<CodeSnippet code={shlinkItem.shortUrl} />

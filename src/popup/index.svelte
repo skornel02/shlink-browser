@@ -21,8 +21,12 @@
 	);
 
 	const openSettings = () => {
-		if (chrome !== undefined) {
-			chrome.runtime.openOptionsPage();
+		if (chrome !== undefined && chrome.runtime !== undefined) {
+			if (chrome.runtime.openOptionsPage !== undefined) {
+					chrome.runtime.openOptionsPage();
+			} else if (chrome.runtime.getURL !== undefined) {
+				window.open(chrome.runtime.getURL('options.html'));
+			}
 		}
 	};
 </script>

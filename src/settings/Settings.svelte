@@ -15,6 +15,14 @@
 	let { apiSecret, apiUrl } = settings;
 	let unsaved: boolean = false;
 
+	const beforeUnload = (event: BeforeUnloadEvent) => {
+		if (unsaved) {
+			event.preventDefault();
+			event.returnValue = "";
+			return "";
+		}
+	}
+
 	const createNewSettings = () => {
 		return {
 			apiSecret: apiSecret,
@@ -33,6 +41,8 @@
 			});
 	};
 </script>
+
+<svelte:window on:beforeunload={beforeUnload}/>
 
 <Grid>
 	<Row>
