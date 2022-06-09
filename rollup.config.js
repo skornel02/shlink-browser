@@ -12,21 +12,26 @@ import {
 import zip from "rollup-plugin-zip";
 import json from "@rollup/plugin-json";
 import { optimizeImports } from "carbon-preprocess-svelte";
+import { emptyDir } from "rollup-plugin-empty-dir";
 
 const production = !process.env.ROLLUP_WATCH;
 
 export default [
 	{
-		input: "src/manifest.json",
+		input: "src/manifest.json.ts",
 		output: {
 			dir: "dist",
 			format: "esm",
 		},
 		plugins: [
 			chromeExtension(),
-			simpleReloader({unregisterServiceWorkers: true}),
+			simpleReloader({ unregisterServiceWorkers: true }),
+			emptyDir(),
 			svelte({
-				preprocess: [sveltePreprocess({ sourceMap: !production }), optimizeImports()],
+				preprocess: [
+					sveltePreprocess({ sourceMap: !production }),
+					optimizeImports(),
+				],
 				compilerOptions: {
 					dev: !production,
 				},
@@ -45,7 +50,7 @@ export default [
 			}),
 
 			production && terser(),
-			production && zip({ dir: "releases" }),
+			production && zip({ file: "../releases/shlink-browser.zip" }),
 		],
 		watch: {
 			clearScreen: false,

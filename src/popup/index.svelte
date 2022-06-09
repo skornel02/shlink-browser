@@ -23,9 +23,9 @@
 	const openSettings = () => {
 		if (chrome !== undefined && chrome.runtime !== undefined) {
 			if (chrome.runtime.openOptionsPage !== undefined) {
-					chrome.runtime.openOptionsPage();
+				chrome.runtime.openOptionsPage();
 			} else if (chrome.runtime.getURL !== undefined) {
-				window.open(chrome.runtime.getURL('options.html'));
+				window.open(chrome.runtime.getURL("options.html"));
 			}
 		}
 	};
@@ -36,14 +36,24 @@
 		<SkipToContent />
 	</svelte:fragment>
 	<HeaderUtilities>
-		<HeaderGlobalAction aria-label="Settings" icon={SettingsAdjust} on:click={openSettings} />
+		<HeaderGlobalAction
+			aria-label="Settings"
+			icon={SettingsAdjust}
+			on:click={openSettings}
+		/>
 	</HeaderUtilities>
 </Header>
 
-<Content>
+<Content id="container">
 	{#await settingsPromise}
 		<Loading withOverlay={false} description="Loading your settings" />
 	{:then settings}
 		<Popup {settings} />
 	{/await}
 </Content>
+
+<style>
+	:global(#container) {
+		padding: 0;
+	}
+</style>

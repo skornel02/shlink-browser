@@ -9,6 +9,7 @@
 		TextInput,
 	} from "carbon-components-svelte";
 	import ConnectionTester from "../components/ConnectionTester.svelte";
+import { clearLastValidated, saveLastValidated } from "../Storage";
 
 	export let settings: ShlinkSettings;
 	export let handleSave: (setting: ShlinkSettings) => Promise<void>;
@@ -23,7 +24,7 @@
 		}
 	}
 
-	const createNewSettings = () => {
+	const createNewSettings = (): ShlinkSettings => {
 		return {
 			apiSecret: apiSecret,
 			apiUrl: apiUrl,
@@ -35,6 +36,7 @@
 		handleSave(newSettings)
 			.then(() => {
 				unsaved = false;
+				clearLastValidated();
 			})
 			.catch(() => {
 				unsaved = true;

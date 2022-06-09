@@ -1,5 +1,11 @@
 import type { ShlinkSettings } from "./SettingsHelper";
-import { convertShlinkItemParamsToQuery, ShlinkItem, ShlinkItemCreationOptions, ShlinkItemParams, ShlinkTagsResponse } from "./ShlinkData";
+import {
+	convertShlinkItemParamsToQuery,
+	ShlinkItem,
+	ShlinkItemCreationOptions,
+	ShlinkItemParams,
+	ShlinkTagsResponse,
+} from "./ShlinkData";
 
 interface CheckResponse {
 	valid: boolean;
@@ -49,23 +55,34 @@ export class ShlinkV2Backend {
 	}
 
 	async deleteShort(shortCode: string, domain?: string): Promise<void> {
-		await fetch(`${this.#baseUrl}/short-urls/${shortCode}` + (domain !== undefined ? `?domain=${domain}` : ''), {
-			method: "DELETE",
-			headers: this.#headers,
-		});
+		await fetch(
+			`${this.#baseUrl}/short-urls/${shortCode}` +
+				(domain !== undefined ? `?domain=${domain}` : ""),
+			{
+				method: "DELETE",
+				headers: this.#headers,
+			}
+		);
 	}
 
-	async getShorts(params: ShlinkItemParams = {}): Promise<ShlinkTagsResponse> {
-		console.log(`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(params).toString()}`);
+	async getShorts(
+		params: ShlinkItemParams = {}
+	): Promise<ShlinkTagsResponse> {
+		console.log(
+			`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(
+				params
+			).toString()}`
+		);
 		const response = await fetch(
-			`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(params).toString()}`,
+			`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(
+				params
+			).toString()}`,
 			{
 				method: "GET",
 				headers: this.#headers,
 			}
-		)
+		);
 		const data = await response.json();
 		return data;
 	}
-
 }

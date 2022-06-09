@@ -14,46 +14,58 @@ export interface ShlinkItemCreationOptions {
 	shortCodeLength?: number;
 }
 
-export type OrderByRules = 'longUrl-ASC' | 'longUrl-DESC' | " shortCode-ASC" | 'shortCode-DESC' | 'dateCreated-ASC' | 'dateCreated-DESC' | 'visits-ASC' | 'visits-DESC' | 'title-ASC' | 'title-DESC';
+export type OrderByRules =
+	| "longUrl-ASC"
+	| "longUrl-DESC"
+	| " shortCode-ASC"
+	| "shortCode-DESC"
+	| "dateCreated-ASC"
+	| "dateCreated-DESC"
+	| "visits-ASC"
+	| "visits-DESC"
+	| "title-ASC"
+	| "title-DESC";
 
 export interface ShlinkItemParams {
 	page?: number;
 	itemsPerPage?: number;
 	searchTerm?: string;
 	tags?: string[];
-	tagsMode?: 'any' | 'all';
+	tagsMode?: "any" | "all";
 	orderBy?: OrderByRules;
 	startDate?: string;
 	endDate?: string;
 }
-export const convertShlinkItemParamsToQuery = (params: ShlinkItemParams): URLSearchParams => {
+export const convertShlinkItemParamsToQuery = (
+	params: ShlinkItemParams
+): URLSearchParams => {
 	const searchParams = new URLSearchParams();
 	if (params.page !== undefined) {
-		searchParams.append('page', String(params.page));
+		searchParams.append("page", String(params.page));
 	}
 	if (params.itemsPerPage !== undefined) {
-		searchParams.append('itemsPerPage', String(params.itemsPerPage));
+		searchParams.append("itemsPerPage", String(params.itemsPerPage));
 	}
 	if (params.searchTerm !== undefined) {
-		searchParams.append('searchTerm', params.searchTerm);
+		searchParams.append("searchTerm", params.searchTerm);
 	}
 	if (params.tags !== undefined) {
-		params.tags.forEach(tag => searchParams.append('tags', tag));		
+		params.tags.forEach((tag) => searchParams.append("tags", tag));
 	}
 	if (params.tagsMode !== undefined) {
-		searchParams.append('tagsMode', params.tagsMode);
+		searchParams.append("tagsMode", params.tagsMode);
 	}
 	if (params.orderBy !== undefined) {
-		searchParams.append('orderBy', params.orderBy);
+		searchParams.append("orderBy", params.orderBy);
 	}
 	if (params.startDate !== undefined) {
-		searchParams.append('startDate', params.startDate);
+		searchParams.append("startDate", params.startDate);
 	}
 	if (params.endDate !== undefined) {
-		searchParams.append('endDate', params.endDate);
+		searchParams.append("endDate", params.endDate);
 	}
 	return searchParams;
-}
+};
 
 export interface ShlinkItem {
 	shortCode: string;
@@ -66,7 +78,7 @@ export interface ShlinkItem {
 		validSince?: string;
 		validUntil?: string;
 		maxVisits?: number;
-	}
+	};
 	domain?: string;
 	title?: string;
 	crawlable?: boolean;

@@ -19,3 +19,19 @@ export const loadSettings = async (): Promise<ShlinkSettings | undefined> => {
 export const saveSettings = async (settings: ShlinkSettings): Promise<void> => {
 	await storage.sync.set({ settings });
 };
+
+export const loadLastValidated = async (): Promise<string | undefined> => {
+	const { lastValidated } = await storage.sync.get("lastValidated");
+	return typeof lastValidated === "string" ? lastValidated : undefined;
+};
+
+export const saveLastValidated = async (
+	lastValidated: string
+): Promise<void> => {
+	await storage.sync.set({ lastValidated });
+};
+
+export const clearLastValidated = async (): Promise<void> => {
+	console.log("Clearing last validated...");
+	await storage.sync.remove("lastValidated");
+};
