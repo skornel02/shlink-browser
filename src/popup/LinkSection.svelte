@@ -2,6 +2,7 @@
 	import { Button, Column, Row } from "carbon-components-svelte";
 	import { ShlinkV2Backend } from "../Backend";
 	import ShlinkItemTile from "../components/ShlinkItemTile.svelte";
+import { openStatsForItem } from "../NavigationHelper";
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import type { ShlinkItem, ShlinkTagsResponse } from "../ShlinkData";
 
@@ -39,6 +40,12 @@
 		});
 	};
 
+	const viewStatsForShortUrl = ({
+		detail,
+	}: CustomEvent<{ shlinkItem: ShlinkItem }>) => {
+		openStatsForItem(detail.shlinkItem.shortCode);
+	};
+
 	updateShlinkItems();
 </script>
 
@@ -46,7 +53,7 @@
 	<p>No short links found for this URL.</p>
 {:else}
 {#each shlinkItems as shlinkItem}
-	<ShlinkItemTile {shlinkItem} on:delete={deleteShortUrl} />
+	<ShlinkItemTile {shlinkItem} on:delete={deleteShortUrl} on:stats={viewStatsForShortUrl} />
 {/each}
 {/if}
 <Row>

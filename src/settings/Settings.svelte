@@ -7,9 +7,10 @@
 		Grid,
 		Row,
 		TextInput,
+		PasswordInput,
 	} from "carbon-components-svelte";
 	import ConnectionTester from "../components/ConnectionTester.svelte";
-import { clearLastValidated, saveLastValidated } from "../Storage";
+	import { clearLastValidated, saveLastValidated } from "../Storage";
 
 	export let settings: ShlinkSettings;
 	export let handleSave: (setting: ShlinkSettings) => Promise<void>;
@@ -22,7 +23,7 @@ import { clearLastValidated, saveLastValidated } from "../Storage";
 			event.returnValue = "";
 			return "";
 		}
-	}
+	};
 
 	const createNewSettings = (): ShlinkSettings => {
 		return {
@@ -44,7 +45,7 @@ import { clearLastValidated, saveLastValidated } from "../Storage";
 	};
 </script>
 
-<svelte:window on:beforeunload={beforeUnload}/>
+<svelte:window on:beforeunload={beforeUnload} />
 
 <Grid>
 	<Row>
@@ -53,7 +54,7 @@ import { clearLastValidated, saveLastValidated } from "../Storage";
 	<Row>
 		<Form>
 			<FormGroup>
-				<TextInput
+				<PasswordInput
 					labelText="API key"
 					placeholder="Enter api key..."
 					helperText="You can find help with your api key here: https://shlink.io/documentation/api-docs/authentication/#managing-api-keys"

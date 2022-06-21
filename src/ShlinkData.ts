@@ -98,3 +98,40 @@ export interface ShlinkVisitStats {
 		orphanVisitsCount: number;
 	};
 }
+
+export interface ShlinkPagination {
+	currentPage: number;
+	pagesCount: number;
+	itemsPerPage: number;
+	itemsInCurrentPage: number;
+	totalItems: number;
+}
+
+export interface ShlinkLocationData {
+	cityName: string;
+	countryCode: string;
+	countryName: string;
+	latitude: number;
+	longitude: number;
+	regionName: string;
+	timezone: string;
+}
+
+export interface ShlinkVisitItemData{
+	referer: string;
+	date: string;
+	userAgent: string;
+	visitLocation: ShlinkLocationData;
+	potentialBot: boolean;
+}	
+
+export interface ShlinkVisitData {
+	visits: {
+		data: ShlinkVisitItemData[];
+		pagination: ShlinkPagination;
+	}
+}
+
+export interface ShlinkPaginationParams {
+	page?: number;
+}

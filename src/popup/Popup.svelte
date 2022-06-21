@@ -34,13 +34,3 @@
 		</Grid>
 	{/await}
 {/if}
-
-<style>
-	:global(#main) {
-		text-align: center;
-		padding: 1em;
-		max-width: 300px;
-		min-width: 200px;
-		margin: 0 auto;
-	}
-</style>

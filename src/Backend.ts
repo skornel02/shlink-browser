@@ -4,7 +4,9 @@ import {
 	ShlinkItem,
 	ShlinkItemCreationOptions,
 	ShlinkItemParams,
+	ShlinkPaginationParams,
 	ShlinkTagsResponse,
+	ShlinkVisitData,
 } from "./ShlinkData";
 
 interface CheckResponse {
@@ -68,14 +70,23 @@ export class ShlinkV2Backend {
 	async getShorts(
 		params: ShlinkItemParams = {}
 	): Promise<ShlinkTagsResponse> {
-		console.log(
-			`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(
-				params
-			).toString()}`
-		);
 		const response = await fetch(
 			`${this.#baseUrl}/short-urls?${convertShlinkItemParamsToQuery(
 				params
+			).toString()}`,
+			{
+				method: "GET",
+				headers: this.#headers,
+			}
+		);
+		const data = await response.json();
+		return data;
+	}
+
+	async getVisitsForShort(shortCode: string, pagination: ShlinkPaginationParams): Promise<ShlinkVisitData> {
+		const response = await fetch(
+			`${this.#baseUrl}/short-urls/${shortCode}/visits?${convertShlinkItemParamsToQuery(
+				pagination
 			).toString()}`,
 			{
 				method: "GET",

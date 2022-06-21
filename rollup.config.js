@@ -26,7 +26,6 @@ export default [
 		plugins: [
 			chromeExtension(),
 			simpleReloader({ unregisterServiceWorkers: true }),
-			emptyDir(),
 			svelte({
 				preprocess: [
 					sveltePreprocess({ sourceMap: !production }),
@@ -51,6 +50,7 @@ export default [
 
 			production && terser(),
 			production && zip({ file: "../releases/shlink-browser.zip" }),
+			production && emptyDir(),
 		],
 		watch: {
 			clearScreen: false,

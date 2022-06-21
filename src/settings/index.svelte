@@ -12,6 +12,8 @@
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import { loadSettings, saveSettings } from "../Storage";
 	import Settings from "./Settings.svelte";
+	import { openDashboard, openSite } from "../NavigationHelper";
+	import { Table } from "carbon-icons-svelte";
 
 	let settingsPromise: Promise<ShlinkSettings> = loadSettings().then(
 		(settings) => {
@@ -24,10 +26,6 @@
 		await saveSettings(settings);
 		console.log("Settings saved!", settings);
 	};
-
-	const openSite = () => {
-		window.open('https://github.com/skornel02/shlink-browser', '_blank');
-	}
 </script>
 
 <Header company="Shlink Browser" platformName="Options">
@@ -35,7 +33,16 @@
 		<SkipToContent />
 	</svelte:fragment>
 	<HeaderUtilities>
-		<HeaderGlobalAction aria-label="Settings" icon={LogoGithub} on:click={openSite}/>
+		<HeaderGlobalAction
+			aria-label="Dashboard"
+			icon={Table}
+			on:click={openDashboard}
+		/>
+		<HeaderGlobalAction
+			aria-label="Settings"
+			icon={LogoGithub}
+			on:click={openSite}
+		/>
 	</HeaderUtilities>
 </Header>
 

@@ -2,7 +2,6 @@
 	import "carbon-components-svelte/css/white.css";
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import { loadSettings } from "../Storage";
-	import Popup from "./Popup.svelte";
 	import {
 		Content,
 		Header,
@@ -12,8 +11,7 @@
 		SkipToContent,
 	} from "carbon-components-svelte";
 	import SettingsAdjust from "carbon-icons-svelte/lib/SettingsAdjust.svelte";
-	import Table from "carbon-icons-svelte/lib/Table.svelte";
-import { openDashboard, openSettings } from "../NavigationHelper";
+import Dashboard from "./Dashboard.svelte";
 
 	let settingsPromise: Promise<ShlinkSettings> = loadSettings().then(
 		(settings) => {
@@ -22,7 +20,15 @@ import { openDashboard, openSettings } from "../NavigationHelper";
 		}
 	);
 
-	
+	const openSettings = () => {
+		if (chrome !== undefined && chrome.runtime !== undefined) {
+			if (chrome.runtime.openOptionsPage !== undefined) {
+				chrome.runtime.openOptionsPage();
+			} else if (chrome.runtime.getURL !== undefined) {
+				window.open(chrome.runtime.getURL("options.html"));
+			}
+		}
+	};
 </script>
 
 <Header company="Shlink Browser" platformName="Popup">
@@ -31,11 +37,6 @@ import { openDashboard, openSettings } from "../NavigationHelper";
 	</svelte:fragment>
 	<HeaderUtilities>
 		<HeaderGlobalAction
-			aria-label="Dashboard"
-			icon={Table}
-			on:click={openDashboard}
-		/>
-		<HeaderGlobalAction
 			aria-label="Settings"
 			icon={SettingsAdjust}
 			on:click={openSettings}
@@ -43,19 +44,10 @@ import { openDashboard, openSettings } from "../NavigationHelper";
 	</HeaderUtilities>
 </Header>
 
-<Content id="popupContainer">
+<Content id="dashboardContainer">
 	{#await settingsPromise}
 		<Loading withOverlay={false} description="Loading your settings" />
 	{:then settings}
-		<Popup {settings} />
+		<Dashboard {settings}/>
 	{/await}
 </Content>
-
-<style>
-	:global(#popupContainer) {
-		text-align: center;
-		padding: 1em;
-		width: 300px;
-		margin: inherit auto 0 auto;
-	}
-</style>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import {
 		Button,
+		ButtonSet,
 		CodeSnippet,
 		Column,
 		Grid,
@@ -11,15 +12,23 @@
 	import type { ShlinkItem } from "../ShlinkData";
 	import TrashCan from "carbon-icons-svelte/lib/TrashCan.svelte";
 	import View from "carbon-icons-svelte/lib/View.svelte";
+	import ChartLineData from "carbon-icons-svelte/lib/ChartLineData.svelte";
 	import { createEventDispatcher } from "svelte";
 
 	export let shlinkItem: ShlinkItem;
 	const dispatch = createEventDispatcher<{
 		delete: { shlinkItem: ShlinkItem };
+		stats: { shlinkItem: ShlinkItem};
 	}>();
 
 	const deleteShortUrl = () => {
 		dispatch("delete", {
+			shlinkItem,
+		});
+	};
+
+	const statsForShortUrl = () => {
+		dispatch("stats", {
 			shlinkItem,
 		});
 	};
@@ -43,12 +52,20 @@
 				</span>
 			</Column>
 			<Column>
-				<Button
-					kind="danger-tertiary"
-					iconDescription="Delete"
-					icon={TrashCan}
-					on:click={deleteShortUrl}
-				/>
+				<ButtonSet>
+					<Button 
+						kind="secondary"
+						iconDescription="View statistics"
+						icon={ChartLineData}
+						on:click={statsForShortUrl}
+					/>
+					<Button
+						kind="danger-tertiary"
+						iconDescription="Delete"
+						icon={TrashCan}
+						on:click={deleteShortUrl}
+					/>
+				</ButtonSet>
 			</Column>
 		</Row>
 	</Grid>
@@ -59,8 +76,12 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		width: 50px !important;
 	}
 	:global(.visits) > span {
 		margin-left: 5px;
+	}
+	:global(button) {
+		width: 50px !important;
 	}
 </style>

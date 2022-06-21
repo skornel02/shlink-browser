@@ -19,7 +19,7 @@ const manifest: ManifestV3 = {
 	},
 	web_accessible_resources: [
 		{
-			resources: ["test.html"],
+			resources: ["dashboard/index.html"],
 			matches: ["https://skornel02.hu/*"],
 		},
 	],
