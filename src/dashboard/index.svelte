@@ -1,5 +1,6 @@
 <script lang="ts">
 	import "carbon-components-svelte/css/white.css";
+	import "@carbon/charts/styles.css";
 	import type { ShlinkSettings } from "../SettingsHelper";
 	import { loadSettings } from "../Storage";
 	import {
@@ -11,7 +12,7 @@
 		SkipToContent,
 	} from "carbon-components-svelte";
 	import SettingsAdjust from "carbon-icons-svelte/lib/SettingsAdjust.svelte";
-import Dashboard from "./Dashboard.svelte";
+	import Dashboard from "./Dashboard.svelte";
 
 	let settingsPromise: Promise<ShlinkSettings> = loadSettings().then(
 		(settings) => {
@@ -48,6 +49,6 @@ import Dashboard from "./Dashboard.svelte";
 	{#await settingsPromise}
 		<Loading withOverlay={false} description="Loading your settings" />
 	{:then settings}
-		<Dashboard {settings}/>
+		<Dashboard {settings} />
 	{/await}
 </Content>

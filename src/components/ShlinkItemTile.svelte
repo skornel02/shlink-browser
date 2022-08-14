@@ -34,7 +34,7 @@
 	};
 </script>
 
-<Tile>
+<Tile class="shlinkitem">
 	<Grid>
 		<Row>
 			<Truncate clamp="front">
@@ -81,7 +81,7 @@
 	:global(.visits) > span {
 		margin-left: 5px;
 	}
-	:global(button) {
+	:global(.shlinkitem) :global(button) {
 		width: 50px !important;
 	}
 </style>

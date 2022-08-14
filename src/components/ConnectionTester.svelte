@@ -50,8 +50,7 @@
 <Grid id="connectionTester">
 	<Row>
 		{#if connectionStatus === "unknown"}
-			<Button on:click={checkConnection} icon={Unknown}
-				>Check connection</Button
+			<Button on:click={checkConnection} icon={Unknown} wrap="false">Check&nbsp;connection</Button
 			>
 		{:else}
 			<InlineLoading
